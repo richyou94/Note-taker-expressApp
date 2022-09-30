@@ -1,11 +1,14 @@
 const express = require('express');
 const path = require('path');
 const noteData = require('./db/db.json')
+// const uuid = require('./helper/uuid')
+
+const PORT = 3001;
 
 const app = express();
 
 
-const PORT = 3001;
+
 
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());    
@@ -38,20 +41,25 @@ app.post('/api/notes', (req, res) => {
 
     console.info(`${req.method} request received`);
 
-    let response;
+    const { title, text } = req.body;
 
-    if(req.body && req.body.title) {
-        response = {
-            status: 'success',
-            data: req.body,
+    if (title && text) {
+        const newNotes = {
+            title,
+            text,
         };
+
+        const response = {
+            status: 'success',
+            body: newNotes,
+        };
+
+        console.log(response);
         res.status(201).json(response);
     } else {
-        res.status(400).json('Request body must at least contain a title of the note');
+        res.status(500).json('Error in saving notes');
     }
-
-    console.log(req.body);
-})
+});
 
 app.listen(PORT, () =>
     console.log(`Example app listening at http://localhost:${PORT}`)
