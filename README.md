@@ -26,6 +26,9 @@ simply just use npm i
 ## Usage
 Simply just use 'npm start' in order to work on this application. 
 
+![beginning page](./assets/beginning-page.png)
+![app page](./assets/app-page.png)
+
 ## License
 ### [The MIT License](https://opensource.org/licenses/MIT)
 ## Question
