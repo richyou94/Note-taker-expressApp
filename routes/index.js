@@ -1,20 +1,31 @@
-const express = require ('express');
-const path = require('path');
+const router = require('express').Router();
+const notes = require('./notes');
 
-const notesRouter = require('./notes');
+router.get('/notes', (req, res) => {
+    notes
+        .getNotes()
+        .then((notes) => {
+            return res.json(notes);
+        })
+        .catch((err) => res.status(500).json(err));
+});
 
-const app = express();
+router.post('/notes', (req, res) => {
+    notes  
+        .addNote(req.body)
+        .then((note) => res.json(note))
+        .catch((err) => res.status(500).json(err));
+});
 
-app.use('/notes', notesRouter);
-app.use(express.static('public'));
-
-app.get('/', (req, res) => 
-    res.sendFile(path.join(__dirname, '../public/index.html'))
-);
-
+router.delete('/notes/:id', (req, res) => {
+    notes
+        .deleteNote(req.params.id)
+        .then(() => res.json({ ok: true}))
+        .catch((err) => res.status(500).json(err));
+});
 // app.get('/notes', (req, res) => 
 // res.sendFile(path.join(__dirname, '../public/notes.html'))
 // );
 
-module.exports = app;
+module.exports = router;
 
